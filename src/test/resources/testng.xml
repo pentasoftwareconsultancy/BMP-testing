@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="BMP Automation Suite">
+    <listeners>
+        <listener class-name="com.bmp.automation.listeners.TestListeners"> </listener>
+    </listeners>
+    <test verbose="2" preserve-order="true" name="BMP Tests">
+        <classes><!--<class name="com.bmp.automation.tests.LoginTest">
+            <methods>
+                <include name="testLoginToAdmin"/>
+            </methods>
+        </class><class name="tests.LeadTest">
+                <methods>
+                    <include name="testCreateLeads"/>
+                </methods>
+            </class> !-->
+        </classes>
+    </test>
+</suite>
