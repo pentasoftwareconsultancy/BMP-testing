@@ -16,7 +16,7 @@ import org.testng.ITestResult;
 public class TestListeners extends BaseTest implements ITestListener {
 
     private static ExtentReports extent;
-    private static ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
+    private static final ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
 
     @Override
     public void onStart(ITestContext context) {
@@ -73,22 +73,9 @@ public class TestListeners extends BaseTest implements ITestListener {
         extent.flush();
     }
 
-    // Fetch driver safely from BaseTest
-//    private WebDriver getDriver(ITestResult result) {
-//        Object testClass = result.getInstance();
-//        if (testClass instanceof BaseTest) {
-//            return getDriver();
-//        }
-//        return null;
-//    }
     private WebDriver getDriver(ITestResult result) {
-        Object testClass = result.getInstance();
 
-        if (testClass instanceof BaseTest) {
-            return ((BaseTest) testClass).getDriver();
-        }
-
-        return null;
+        return BaseTest.getDriver();
     }
 
 }

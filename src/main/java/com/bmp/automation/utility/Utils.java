@@ -1,7 +1,6 @@
 package com.bmp.automation.utility;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.v85.emulation.Emulation;
@@ -144,10 +143,8 @@ public class Utils {
     public static WebDriver switchToChildWindow(WebDriver driver) {
         String parentWindow = driver.getWindowHandle();
         Set<String> windows = driver.getWindowHandles();
-        Iterator<String> itr = windows.iterator();
-        while(itr.hasNext()) {
-            String childWindow = itr.next();
-            if(!parentWindow.equals(childWindow)){
+        for (String childWindow : windows) {
+            if (!parentWindow.equals(childWindow)) {
                 driver.switchTo().window(childWindow);
 
             }
@@ -295,13 +292,6 @@ public class Utils {
         String timestamp  = genrateSystemDate(); // You can adjust the range as needed
         return "test1+admin" + timestamp + "@gmail.com";
     }
-
-    // Method to generate a random email for Regional head
-    public static String emailForCraeteLeads() {
-        String randomNumber = genrateSystemDate(); // You can adjust the range as needed
-        return "test01+leads" + randomNumber + "@gmail.com";
-    }
-
 
 
     /**
@@ -487,20 +477,6 @@ public static void selectByVisibleTextT(WebElement element, String value, String
         }
     }
 
-    /* Window resize
-    resizeWindow(driver, 1366, 768);  // Laptop
-    resizeWindow(driver, 1280, 720);  // Small laptop
-    resizeWindow(driver, 375, 812);   // Mobile (iPhone X) */
-
-    public static void resizeWindow(WebDriver driver, int width, int height) {
-        try {
-            driver.manage().window().setSize(new Dimension(width, height));
-            System.out.println("Window resized to " + width + "x" + height);
-        } catch (Exception e) {
-            System.out.println("Window resize failed: " + e.getMessage());
-        }
-    }
-
     public static boolean isIncognitoMode(WebDriver driver) {
         try {
             JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -562,7 +538,7 @@ public static void selectByVisibleTextT(WebElement element, String value, String
     public static void smartZoomOut(WebDriver driver, double scale) {
         try {
             if (isIncognitoMode(driver)) {
-                // ✅ Incognito → use CDP
+                // Incognito → use CDP
                 ChromeDriver chromeDriver = (ChromeDriver) driver;
 
                 Map<String, Object> params = new HashMap<>();
