@@ -2,6 +2,7 @@ package com.bmp.automation.core;
 
 import com.bmp.automation.base.PropertiesUtil;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.logging.log4j.ThreadContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -41,7 +42,8 @@ public class BaseTest {
     public void setup(String browser) {
 
         WebDriver driverInstance = null;
-
+        // Set thread ID for logging
+        ThreadContext.put("threadId", String.valueOf(Thread.currentThread().getId()));
         // ================================
         // Parallel Execution Logging
         // ================================
