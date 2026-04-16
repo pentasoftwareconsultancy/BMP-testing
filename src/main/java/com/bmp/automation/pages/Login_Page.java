@@ -68,6 +68,7 @@ public class Login_Page extends PropertiesUtil {
         click_rememberme();
         clickOnLogin();
         log.info("Login successfully");
+        log.info("Login");
     }
 
 }
