@@ -22,7 +22,7 @@ public class SignupTest extends BaseTest{
 
         SignUpPage page = new SignUpPage(getDriver());
 
-        page.completeSignup("abhi", "1234567890","abc@gmail.com", "Maharashtra", "Abhi@003");
+        page.completeSignup("abhi", "8668217696","abc@gmail.com", "Pune", "Maharashtra","Abhi@003");
 
         log.info("Signup action completed");
 

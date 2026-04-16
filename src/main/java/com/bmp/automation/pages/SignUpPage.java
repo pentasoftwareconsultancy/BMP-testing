@@ -66,7 +66,7 @@ public class SignUpPage extends PropertiesUtil {
     @FindBy(xpath = "//input[@type='checkbox']")
     private WebElement i_agree_Checkbox;
 
-    @FindBy(xpath = "//button[text()='Sign Up']")
+    @FindBy(xpath = "//button[text()='Create Account']")
     private WebElement signUpButton;
 
     // Example success message (update locator based on your app)
@@ -149,7 +149,7 @@ public class SignUpPage extends PropertiesUtil {
     // ================================
 
     public void completeSignup(String name, String phone, String email,
-                               String city, String state) {
+                               String city, String state, String pass) {
 
         log.info("===== Starting Signup Flow =====");
 
@@ -161,8 +161,8 @@ public class SignUpPage extends PropertiesUtil {
         enterEmail(email);
         enterCity(city);
         enterState(state);
-       // enterPassword(pass);
-       // enterConfirmPassword(pass);
+        enterPassword(pass);
+        enterConfirmPassword(pass);
         acceptTerms();
 
         clickSignupButton();
@@ -176,7 +176,8 @@ public class SignUpPage extends PropertiesUtil {
 
     public boolean isSignupSuccessful() {
         boolean result = Utils.waitForVisibilityOFElement(driver, successMessage, 10);
-        log.info("Signup success status: {}", result);
+        log.info("Signup success status: {" +
+                "}", result);
         return result;
     }
 
