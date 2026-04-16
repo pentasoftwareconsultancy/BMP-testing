@@ -115,7 +115,8 @@ public class SignUpPage extends PropertiesUtil {
     }
 
     public void enterState(String state) {
-        log.info("Entering State: {}", state);
+        log.info("Entering State: {" +
+                "}", state);
         stateField.clear();
         stateField.sendKeys(state);
     }
