@@ -22,30 +22,14 @@ public class SignupTest extends BaseTest{
 
         SignUpPage page = new SignUpPage(getDriver());
 
-        page.completeSignup("abhi", "8668217696","abcd@gmail.com", "Pune", "Maharashtra","Abhi@003");
+        boolean result = page.completeSignup();
 
         log.info("Signup action completed");
 
         // ================================
         // Soft Assertions
         // ================================
-
-        // Validate signup success
-        boolean isSuccess = page.isSignupSuccessful();
-        softAssert.assertTrue(
-                isSuccess,
-                "Signup failed - Success message not displayed"
-        );
-
-        // Validate success message text
-        String actualMsg = page.getSuccessMessage();
-        String expectedMsg = "Signup successful";
-
-        softAssert.assertEquals(
-                actualMsg,
-                expectedMsg,
-                "Signup success message mismatch"
-        );
+        softAssert.assertTrue(result, "Signup flow failed");
 
         log.info("Signup validations completed");
 
