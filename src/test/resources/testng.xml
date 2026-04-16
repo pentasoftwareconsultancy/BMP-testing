@@ -1,19 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="BMP Automation Suite">
+
+<suite name="BMP Automation Suite" parallel="tests" thread-count="2">
+
+    <!-- ============================= -->
+    <!-- LISTENERS -->
+    <!-- ============================= -->
     <listeners>
-        <listener class-name="com.bmp.automation.listeners.TestListeners"> </listener>
+        <listener class-name="com.bmp.automation.listeners.TestListeners"/>
     </listeners>
-    <test verbose="2" preserve-order="true" name="BMP Tests">
-        <classes><!--<class name="com.bmp.automation.tests.LoginTest">
-            <methods>
-                <include name="testLoginToAdmin"/>
-            </methods>
-        </class><class name="tests.LeadTest">
-                <methods>
-                    <include name="testCreateLeads"/>
-                </methods>
-            </class> !-->
+
+    <!-- ============================= -->
+    <!-- TEST 1 - CHROME -->
+    <!-- ============================= -->
+    <test name="Chrome Tests">
+
+        <!-- Browser Parameter -->
+        <parameter name="browser" value="chrome"/>
+
+        <classes>
+            <class name="com.bmp.automation.tests.SignupTest"/>
+        </classes>
+
+    </test>
+
+    <!-- ============================= -->
+    <!-- TEST 2 - (Future: Firefox) -->
+    <!-- ============================= -->
+    <!--
+    <test name="Firefox Tests">
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="com.bmp.automation.tests.SignupTest"/>
         </classes>
     </test>
+    -->
+
 </suite>

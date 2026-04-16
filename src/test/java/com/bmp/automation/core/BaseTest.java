@@ -6,10 +6,7 @@ import org.apache.logging.log4j.ThreadContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Parameters;
+import org.testng.annotations.*;
 
 public class BaseTest {
 
@@ -39,9 +36,12 @@ public class BaseTest {
      * This method runs BEFORE every test method
      * It initializes browser based on parameter and sets up environment
      */
-    @BeforeSuite(alwaysRun = true)
+    // ================================
+    // BEFORE CLASS → E2E FLOW START
+    // ================================
+    @BeforeClass(alwaysRun = true)
     @Parameters("browser")  // Browser value comes from TestNG XML
-    public void setup(String browser) {
+    public void setup(@Optional("chrome") String browser) {
 
         WebDriver driverInstance = null;
         // Set thread ID for logging
@@ -117,7 +117,7 @@ public class BaseTest {
 
         // Quit browser if driver exists
         if (getDriver() != null) {
-            getDriver().quit();  // Close browser
+            //getDriver().quit();  // Close browser
             unload();            // Remove driver from ThreadLocal
         }
     }
