@@ -8,6 +8,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BaseTest {
 
     // Utility to read config properties (like URL, credentials, etc.)
@@ -18,6 +21,7 @@ public class BaseTest {
 
     // Getter method to access driver anywhere in framework
     public static WebDriver getDriver() {
+
         return driver.get();  // returns driver specific to current thread
     }
 
@@ -63,7 +67,13 @@ public class BaseTest {
         options.addArguments("--disable-dev-shm-usage");   // Overcome limited resource problems
         options.addArguments("--no-sandbox");              // Required for Linux/Docker
         options.addArguments("--disable-notifications");   // Disable browser notifications
+        options.addArguments("--disable-geolocation");
         options.addArguments("--disable-extensions");      // Disable extensions
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("profile.default_content_setting_values.notifications", 2);
+        prefs.put("profile.default_content_setting_values.geolocation", 2);
+
+        options.setExperimentalOption("prefs", prefs);
         options.addArguments("--incognito");               // Open in incognito mode
 
         // Read headless mode from system property (default = false)

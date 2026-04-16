@@ -312,9 +312,14 @@ public class Utils {
 
     public static String randomEmailToReg() {
         String timestamp  = genrateSystemDate(); // You can adjust the range as needed
-        return "test1+admin" + timestamp + "@gmail.com";
+        return "test+user" + timestamp + "@gmail.com";
     }
+    public static String generateMobileNumber() {
+        String prefix = "9"; // ensures 10-digit Indian number starting with 9
+        long randomNumber = (long)(Math.random() * 1_000_000_000L);
 
+        return prefix + String.format("%09d", randomNumber);
+    }
 
     /**
      * Introduces a delay (sleep) in milliseconds.
@@ -475,27 +480,18 @@ public static void selectByVisibleTextT(WebElement element, String value, String
     }
 
     //Method for Handling Alert
-    public static boolean handleAlertIfPresent(WebDriver driver, int waitSeconds) {
+    public static String handleAlertIfPresent(WebDriver driver, int timeout) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitSeconds));
-            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+            Alert alert = new WebDriverWait(driver, Duration.ofSeconds(timeout))
+                    .until(ExpectedConditions.alertIsPresent());
 
-            System.out.println("Alert text: " + alert.getText());
+            String text = alert.getText();
             alert.accept();
 
-            return true;
+            return text;
 
         } catch (TimeoutException e) {
-            // No alert present – this is OK
-            return false;
-
-        } catch (UnhandledAlertException e) {
-            driver.switchTo().alert().accept();
-            return true;
-
-        } catch (Exception e) {
-            System.out.println("Error handling alert: " + e.getMessage());
-            return false;
+            return null;
         }
     }
 

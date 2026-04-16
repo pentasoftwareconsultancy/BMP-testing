@@ -10,11 +10,12 @@ import org.openqa.selenium.support.PageFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 public class SignUpPage extends PropertiesUtil {
 
     private WebDriver driver;
     private ActionsUtil actionsUtil;
-
+    private PropertiesUtil testDataProp;
     // Logger
     private static final Logger log = LoggerFactory.getLogger(SignUpPage.class);
 
@@ -30,6 +31,7 @@ public class SignUpPage extends PropertiesUtil {
         this.driver = driver;
         PageFactory.initElements(driver, this);
         this.actionsUtil = new ActionsUtil(driver);
+        this.testDataProp = new PropertiesUtil();
     }
 
     // ================================
@@ -149,44 +151,79 @@ public class SignUpPage extends PropertiesUtil {
     // Business Flow (IMPORTANT )
     // ================================
 
-    public void completeSignup(String name, String phone, String email,
-                               String city, String state, String pass) {
+    public boolean completeSignup() {
 
         log.info("===== Starting Signup Flow =====");
 
-        clickSignupFromHome();
-        clickSignupLink();
+        String name = testDataProp.getTestData("signup.name");
+        //String phone = testDataProp.getTestData("signup.phone");
+        //String email = testDataProp.getTestData("signup.email");
+        String city = testDataProp.getTestData("signup.city");
+        String state = testDataProp.getTestData("signup.state");
+        String pass = testDataProp.getTestData("signup.password");
 
-        enterFullName(name);
-        enterPhone(phone);
-        enterEmail(email);
-        enterCity(city);
-        enterState(state);
-        enterPassword(pass);
-        enterConfirmPassword(pass);
-        acceptTerms();
+        Utils.waitForElementToBeClickable(driver, signUpBtn_Home, 10);
+        signUpBtn_Home.click();
+        Utils.waitForElementToBeClickable(driver, signupLink, 10);
+        signupLink.click();
 
-        clickSignupButton();
+        Utils.waitForVisibilityOFElement(driver, full_nameField, 10);
+        full_nameField.sendKeys(name);
 
-        log.info("===== Signup Flow Completed =====");
+        phone_numberField.sendKeys(Utils.generateMobileNumber());
+        emailField.sendKeys(Utils.randomEmailToReg());
+        cityField.sendKeys(city);
+        stateField.sendKeys(state);
+
+        createPassField.sendKeys(pass);
+        confirmPassField.sendKeys(pass);
+
+        if (!i_agree_Checkbox.isSelected()) {
+            i_agree_Checkbox.click();
+        }
+
+        signUpButton.click();
+
+        log.info("Signup submitted, checking for alert...");
+
+        // ================================
+        // ALERT HANDLING
+        // ================================
+        String alertText = Utils.handleAlertIfPresent(driver, 5);
+
+        if (alertText != null) {
+            log.info("Alert detected: {" +
+                    "}", alertText);
+
+            if (alertText.toLowerCase().contains("success")) {
+                log.info("Signup SUCCESS via alert");
+                return true;
+            } else {
+                log.error("Signup FAILED via alert: {" +
+                        "}", alertText);
+                return false;
+            }
+        }
+            // ================================
+            // FALLBACK UI VALIDATION
+            // ================================
+            try {
+                boolean isSuccess = Utils.waitForVisibilityOFElement(driver, successMessage, 10);
+
+                if (isSuccess) {
+                    log.info("Signup SUCCESS via UI message");
+                    return true;
+                } else {
+                    log.error("Signup FAILED - No alert or success message");
+                    return false;
+                }
+
+            } catch (Exception ex) {
+                log.error("Validation failed due to exception", ex);
+                return false;
+            }
+        }
     }
 
-    // ================================
-    // Validation
-    // ================================
-
-    public boolean isSignupSuccessful() {
-        boolean result = Utils.waitForVisibilityOFElement(driver, successMessage, 10);
-        log.info("Signup success status: {" +
-                "}", result);
-        return result;
-    }
-
-    public String getSuccessMessage() {
-        String msg = successMessage.getText();
-        log.info("Success Message: {}", msg);
-        return msg;
-    }
-}
 
 
