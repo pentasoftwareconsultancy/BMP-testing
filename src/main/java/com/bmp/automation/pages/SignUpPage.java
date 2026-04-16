@@ -1,14 +1,40 @@
 package com.bmp.automation.pages;
 
 import com.bmp.automation.base.PropertiesUtil;
+
+import com.bmp.automation.utility.ActionsUtil;
 import com.bmp.automation.utility.Utils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SignUpPage extends PropertiesUtil {
 
     private WebDriver driver;
+    private ActionsUtil actionsUtil;
+
+    // Logger
+    private static final Logger log = LoggerFactory.getLogger(SignUpPage.class);
+
+    // ================================
+    // Constructor
+    // ================================
+    public SignUpPage(WebDriver driver) {
+
+        if (driver == null) {
+            throw new IllegalArgumentException("Driver cannot be null");
+        }
+
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+        this.actionsUtil = new ActionsUtil(driver);
+    }
+
+    // ================================
+    // Locators
+    // ================================
 
     @FindBy(xpath = "//a[text()='Log in / Sign up']")
     private WebElement signUpBtn_Home;
@@ -16,25 +42,25 @@ public class SignUpPage extends PropertiesUtil {
     @FindBy(xpath = "//a[text()='Sign up']")
     private WebElement signupLink;
 
-    @FindBy(xpath = "//input[@id='name']")
+    @FindBy(id = "name")
     private WebElement full_nameField;
 
-    @FindBy(xpath = "//input[@name='phone_number']")
+    @FindBy(name = "phone_number")
     private WebElement phone_numberField;
 
-    @FindBy(xpath = "//input[@name='email']")
+    @FindBy(name = "email")
     private WebElement emailField;
 
-    @FindBy(xpath = "//input[@name='city']")
+    @FindBy(name = "city")
     private WebElement cityField;
 
-    @FindBy(xpath = "//input[@name='state']")
+    @FindBy(name = "state")
     private WebElement stateField;
 
-    @FindBy(xpath = "//input[@name='password']")
+    @FindBy(name = "password")
     private WebElement createPassField;
 
-    @FindBy(xpath = "//input[@name='confirmPassword']")
+    @FindBy(name = "confirmPassword")
     private WebElement confirmPassField;
 
     @FindBy(xpath = "//input[@type='checkbox']")
@@ -43,68 +69,122 @@ public class SignUpPage extends PropertiesUtil {
     @FindBy(xpath = "//button[text()='Sign Up']")
     private WebElement signUpButton;
 
-    public SignUpPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-    }
+    // Example success message (update locator based on your app)
+    @FindBy(xpath = "//div[contains(text(),'successfully')]")
+    private WebElement successMessage;
 
-    public void userSignUp(){
+    // ================================
+    // Actions
+    // ================================
 
-        Utils.waitForElementToBeClickable(driver,signUpBtn_Home,10);
+    public void clickSignupFromHome() {
+        log.info("Clicking on 'Login / Sign Up' button");
+        Utils.waitForElementToBeClickable(driver, signUpBtn_Home, 10);
         signUpBtn_Home.click();
     }
-   /* public boolean userLoginToApp() {
-        try {
 
-            String adminEmail = configProp.getProperty("adminEmail");
-            String adminPassword = configProp.getProperty("adminPassword");
+    public void clickSignupLink() {
+        log.info("Clicking on Signup link");
+        Utils.waitForElementToBeClickable(driver, signupLink, 10);
+        signupLink.click();
+    }
 
-            // Validation: credentials should not be null or empty
-            if (adminEmail == null || adminEmail.isEmpty()
-                    || adminPassword == null || adminPassword.isEmpty()) {
-                System.out.println("Admin credentials are missing in properties file");
-                return false;
-            }
+    public void enterFullName(String name) {
+        log.info("Entering Full Name: {}", name);
+        Utils.waitForVisibilityOFElement(driver, full_nameField, 10);
+        full_nameField.clear();
+        full_nameField.sendKeys(name);
+    }
 
-            // Wait & enter email
-            Utils.waitForVisibilityOFElement(driver,emailField,10);
-            emailField.clear();
-            emailField.sendKeys(adminEmail);
+    public void enterPhone(String phone) {
+        log.info("Entering Phone: {}", phone);
+        phone_numberField.clear();
+        phone_numberField.sendKeys(phone);
+    }
 
-            // Wait & enter password
-            Utils.waitForVisibilityOFElement(driver,passwordField,10);
-            passwordField.clear();
-            passwordField.sendKeys(adminPassword);
+    public void enterEmail(String email) {
+        log.info("Entering Email: {}", email);
+        emailField.clear();
+        emailField.sendKeys(email);
+    }
 
-            // Click login button
-            Utils.waitForElementToBeClickable(driver,loginButton, 10);
-            loginButton.click();
-            System.out.println("Clicked on Admin Login button");
-            // Utils.waitForUrlContains(driver,"login", 10);
-            // Optional: wait for successful login indicator
-            // Example: Dashboard heading / logout button
-            //Utils.waitForVisibilityOFElement(driver,adminDashboard,5);
-            boolean isDashboardPresent = Utils.waitForPresenceOfElementLocated(driver, By.xpath("//a[.//span[normalize-space()='Dashboard'] and not(@aria-hidden='true')]"),
-                    15);
+    public void enterCity(String city) {
+        log.info("Entering City: {}", city);
+        cityField.clear();
+        cityField.sendKeys(city);
+    }
 
-            System.out.println("Navigate On Dashboard: " +isDashboardPresent);
+    public void enterState(String state) {
+        log.info("Entering State: {}", state);
+        stateField.clear();
+        stateField.sendKeys(state);
+    }
 
-            return true;
+    public void enterPassword(String pass) {
+        log.info("Entering Password");
+        createPassField.clear();
+        createPassField.sendKeys(pass);
+    }
 
-        } catch (TimeoutException e) {
-            System.out.println("Login elements not visible within timeout");
-        } catch (NoSuchElementException e) {
-            System.out.println("Login element not found: " + e.getMessage());
-        } catch (ElementClickInterceptedException e) {
-            System.out.println("Login button click intercepted");
-        } catch (StaleElementReferenceException e) {
-            System.out.println("DOM refreshed during login, retry may be required");
-        } catch (Exception e) {
-            System.out.println("Unexpected error during admin login: " + e.getMessage());
+    public void enterConfirmPassword(String pass) {
+        log.info("Entering Confirm Password");
+        confirmPassField.clear();
+        confirmPassField.sendKeys(pass);
+    }
+
+    public void acceptTerms() {
+        log.info("Clicking Terms & Conditions checkbox");
+        if (!i_agree_Checkbox.isSelected()) {
+            i_agree_Checkbox.click();
         }
+    }
 
-        return true;
-    }*/
+    public void clickSignupButton() {
+        log.info("Clicking Signup button");
+        signUpButton.click();
+    }
+
+    // ================================
+    // Business Flow (IMPORTANT )
+    // ================================
+
+    public void completeSignup(String name, String phone, String email,
+                               String city, String state) {
+
+        log.info("===== Starting Signup Flow =====");
+
+        clickSignupFromHome();
+        clickSignupLink();
+
+        enterFullName(name);
+        enterPhone(phone);
+        enterEmail(email);
+        enterCity(city);
+        enterState(state);
+       // enterPassword(pass);
+       // enterConfirmPassword(pass);
+        acceptTerms();
+
+        clickSignupButton();
+
+        log.info("===== Signup Flow Completed =====");
+    }
+
+    // ================================
+    // Validation
+    // ================================
+
+    public boolean isSignupSuccessful() {
+        boolean result = Utils.waitForVisibilityOFElement(driver, successMessage, 10);
+        log.info("Signup success status: {}", result);
+        return result;
+    }
+
+    public String getSuccessMessage() {
+        String msg = successMessage.getText();
+        log.info("Success Message: {}", msg);
+        return msg;
+    }
 }
 
 

@@ -2,11 +2,13 @@ package com.bmp.automation.core;
 
 import com.bmp.automation.base.PropertiesUtil;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.logging.log4j.ThreadContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Parameters;
 
 public class BaseTest {
@@ -29,6 +31,7 @@ public class BaseTest {
 
     // Removes driver from ThreadLocal (important to avoid memory leaks)
     public static void unload() {
+
         driver.remove();
     }
 
@@ -36,12 +39,13 @@ public class BaseTest {
      * This method runs BEFORE every test method
      * It initializes browser based on parameter and sets up environment
      */
-    @BeforeMethod(alwaysRun = true)
+    @BeforeSuite(alwaysRun = true)
     @Parameters("browser")  // Browser value comes from TestNG XML
     public void setup(String browser) {
 
         WebDriver driverInstance = null;
-
+        // Set thread ID for logging
+        ThreadContext.put("threadId", String.valueOf(Thread.currentThread().getId()));
         // ================================
         // Parallel Execution Logging
         // ================================

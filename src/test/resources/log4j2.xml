@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Properties>
+        <!-- Log folder -->
+        <Property name="log-path">logs</Property>
+    </Properties>
+
+    <Appenders>
+
+        <!-- Console -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %c - %msg%n"/>
+        </Console>
+
+        <!-- File per Thread -->
+        <RollingFile name="ThreadFile"
+                     fileName="${log-path}/thread-${ctx:threadId}.log"
+                     filePattern="${log-path}/thread-${ctx:threadId}-%d{yyyy-MM-dd}.log">
+
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %c - %msg%n</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="${sys:logLevel:-info}">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="ThreadFile"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
