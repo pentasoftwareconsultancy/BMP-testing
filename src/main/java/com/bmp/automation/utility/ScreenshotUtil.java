@@ -36,7 +36,7 @@ public class ScreenshotUtil {
     private static String captureScreenshot(WebDriver driver, String testName, String folder) {
 
         if (driver == null) {
-            System.out.println("❌ Driver is NULL. Screenshot not captured.");
+            System.out.println("Driver is NULL. Screenshot not captured.");
             return null;
         }
 

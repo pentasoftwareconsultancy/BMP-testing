@@ -1,10 +1,10 @@
 package com.bmp.automation.utility;
 
 
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-public class Log {
+public class LogUtil {
     public static String readLog(String threadId) {
         try {
             String path = "logs/thread-" + threadId + ".log";

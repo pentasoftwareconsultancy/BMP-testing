@@ -247,6 +247,28 @@ public class Utils {
             System.out.println("Element is not Visible : "+element);
         }
     }
+    /**
+     * Waits until the element is visible on the page
+     *
+     * @param driver WebDriver instance
+     * @param element WebElement to wait for
+     * @param timeoutInSeconds max wait time
+     * @return true if element is visible, false otherwise
+     */
+    public static boolean waitForVisibilityOFElement(WebDriver driver, WebElement element, int timeoutInSeconds) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
+
+            wait.ignoring(StaleElementReferenceException.class)
+                    .until(ExpectedConditions.visibilityOf(element));
+
+            return element.isDisplayed();
+
+        } catch (Exception e) {
+            System.out.println("Element not visible within " + timeoutInSeconds + " seconds");
+            return false;
+        }
+    }
     //Optionally, you can wait for the overlay to disappear
     public static void waitForInvisibilityOfElement(WebDriver driver, WebElement element, Integer waitSeconds)
     {
@@ -406,7 +428,7 @@ public static void selectByVisibleTextT(WebElement element, String value, String
 // Method for path access
     public static String getFilePath(String relativePath) {
         return System.getProperty("user.dir") + File.separator + relativePath;
-    }
+   }
 
     //Method for Random Mobile number:
 
@@ -477,7 +499,7 @@ public static void selectByVisibleTextT(WebElement element, String value, String
         }
     }
 
-    public static boolean isIncognitoMode(WebDriver driver) {
+  /*  public static boolean isIncognitoMode(WebDriver driver) {
         try {
             JavascriptExecutor js = (JavascriptExecutor) driver;
 
@@ -494,7 +516,7 @@ public static void selectByVisibleTextT(WebElement element, String value, String
         } catch (Exception e) {
             return false;
         }
-    }
+    }*/
 
     /*
     Zoom Using CDP
@@ -535,7 +557,7 @@ public static void selectByVisibleTextT(WebElement element, String value, String
         }
     }
 
-    public static void smartZoomOut(WebDriver driver, double scale) {
+   /* public static void smartZoomOut(WebDriver driver, double scale) {
         try {
             if (isIncognitoMode(driver)) {
                 // Incognito → use CDP
@@ -567,7 +589,8 @@ public static void selectByVisibleTextT(WebElement element, String value, String
         } catch (Exception e) {
             System.out.println("Smart zoom failed: " + e.getMessage());
         }
-    }
+    }*/
+
     public static void waitForPageLoad(WebDriver driver) {
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(webDriver -> ((JavascriptExecutor) webDriver)

@@ -1,22 +1,59 @@
 package com.bmp.automation.tests;
 
-import com.bmp.automation.core.BaseTest;import org.openqa.selenium.WebDriver;
-import org.testng.annotations.BeforeMethod;
+import com.aventstack.extentreports.model.Log;
+import com.bmp.automation.core.BaseTest;
+import com.bmp.automation.pages.SignUpPage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 
 public class SignupTest extends BaseTest{
 
-    WebDriver driver;
+    private static final Logger log = LoggerFactory.getLogger(SignupTest.class);
 
-    @BeforeMethod
-    public void init() {
-        driver = BaseTest.getDriver();
-    }
+    @Test(description = "Verify signup flow")
+    public void verifySignup() {
 
-    @Test
-    public void testSignup() {
+        log.info("Starting Signup Test");
 
-        System.out.println("testSignup");
+        SoftAssert softAssert = new SoftAssert();  // Initialize
+
+        SignUpPage page = new SignUpPage(getDriver());
+
+        page.completeSignup("abhi", "1234567890","abc@gmail.com", "Maharashtra", "Abhi@003");
+
+        log.info("Signup action completed");
+
+        // ================================
+        // Soft Assertions
+        // ================================
+
+        // Validate signup success
+        boolean isSuccess = page.isSignupSuccessful();
+        softAssert.assertTrue(
+                isSuccess,
+                "Signup failed - Success message not displayed"
+        );
+
+        // Validate success message text
+        String actualMsg = page.getSuccessMessage();
+        String expectedMsg = "Signup successful";
+
+        softAssert.assertEquals(
+                actualMsg,
+                expectedMsg,
+                "Signup success message mismatch"
+        );
+
+        log.info("Signup validations completed");
+
+        // ================================
+        // VERY IMPORTANT
+        // ================================
+        softAssert.assertAll();  // Without this, test will always PASS
+
+        log.info("Signup Test Completed Successfully");
     }
 }
