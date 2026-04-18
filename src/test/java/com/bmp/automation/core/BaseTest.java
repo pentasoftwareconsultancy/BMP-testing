@@ -17,24 +17,27 @@ public class BaseTest {
     protected static PropertiesUtil propertiesUtil;
 
     // ThreadLocal to maintain separate WebDriver instance per thread (parallel execution safe)
-    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+   // private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    private static WebDriver driver;
 
     // Getter method to access driver anywhere in framework
     public static WebDriver getDriver() {
 
-        return driver.get();  // returns driver specific to current thread
+        return driver; //.get();  // returns driver specific to current thread
     }
 
     // Setter method to assign driver to current thread
     public static void setDriver(WebDriver driverInstance) {
-        driver.set(driverInstance);
+
+       // driver.set(driverInstance); // for future ref parallel execution
+        driver = driverInstance;
     }
 
     // Removes driver from ThreadLocal (important to avoid memory leaks)
-    public static void unload() {
-
-        driver.remove();
-    }
+//    public static void unload() {
+//
+//        driver.remove();
+//    }
 
     /**
      * This method runs BEFORE every test method
@@ -43,7 +46,7 @@ public class BaseTest {
     // ================================
     // BEFORE CLASS → E2E FLOW START
     // ================================
-    @BeforeClass(alwaysRun = true)
+    @BeforeSuite(alwaysRun = true)
     @Parameters("browser")  // Browser value comes from TestNG XML
     public void setup(@Optional("chrome") String browser) {
 
@@ -119,16 +122,16 @@ public class BaseTest {
      * This method runs AFTER every test method
      * It closes browser and cleans ThreadLocal
      */
-    @AfterMethod(alwaysRun = true)
+    @AfterSuite(alwaysRun = true)
     public void teardown() {
 
         // Log thread info during teardown
-        System.out.println("Closing Browser - Thread ID: " + Thread.currentThread().getId());
+        //System.out.println("Closing Browser - Thread ID: " + Thread.currentThread().getId());
 
         // Quit browser if driver exists
-        if (getDriver() != null) {
-            //getDriver().quit();  // Close browser
-            unload();            // Remove driver from ThreadLocal
-        }
+//        if (getDriver() != null) {
+//            //getDriver().quit();  // Close browser
+//            unload();            // Remove driver from ThreadLocal
+//        }
     }
 }
