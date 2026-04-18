@@ -119,7 +119,7 @@ public class BaseTest {
      * This method runs AFTER every test method
      * It closes browser and cleans ThreadLocal
      */
-    @AfterMethod(alwaysRun = true)
+    @AfterClass(alwaysRun = true)
     public void teardown() {
 
         // Log thread info during teardown
@@ -127,7 +127,7 @@ public class BaseTest {
 
         // Quit browser if driver exists
         if (getDriver() != null) {
-            //getDriver().quit();  // Close browser
+            getDriver().quit();  // Close browser
             unload();            // Remove driver from ThreadLocal
         }
     }
