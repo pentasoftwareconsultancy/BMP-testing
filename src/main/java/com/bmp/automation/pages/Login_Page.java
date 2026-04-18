@@ -61,7 +61,7 @@ public class Login_Page extends PropertiesUtil {
         login_Button.click();
     }
 
-    public void completeLogin(){
+    public void completeLogin() throws InterruptedException {
 
         enter_email();
         enter_password();
@@ -69,6 +69,7 @@ public class Login_Page extends PropertiesUtil {
         clickOnLogin();
         log.info("Login successfully");
         log.info("Login");
+        Thread.sleep(1000);
     }
 
 }

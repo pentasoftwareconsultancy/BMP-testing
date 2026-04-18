@@ -122,6 +122,7 @@ public class BaseTest {
      * This method runs AFTER every test method
      * It closes browser and cleans ThreadLocal
      */
+
     @AfterSuite(alwaysRun = true)
     public void teardown() {
 
