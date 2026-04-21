@@ -18,7 +18,8 @@
         <parameter name="browser" value="chrome"/>
 
         <classes>
-            <class name="com.bmp.automation.tests.SignupTest"/>
+            <class name="com.bmp.automation.tests.LoginTest"/>
+            <class name="com.bmp.automation.tests.SendParcelTest"/>
         </classes>
 
     </test>
