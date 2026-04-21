@@ -17,8 +17,7 @@ public class LoginTest  extends BaseTest {
 
 
     @Test(description="Verify login flow")
-    public void verifyloginflow()
-    {
+    public void verifyloginflow() throws InterruptedException {
         Login_Page lp=new Login_Page(getDriver());
         // lp.completelogin();
         lp.completeLogin();

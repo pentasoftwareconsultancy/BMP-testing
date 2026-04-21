@@ -10,9 +10,7 @@ public class SendParcelTest extends BaseTest {
     private static final Logger log = LoggerFactory.getLogger(SendParcelTest.class);
 
     @Test(description="Verify send parcel")
-    public void verifysendparcel()
-
-    {
+    public void verifysendparcel() throws InterruptedException {
         SendParcelPage sparcel=new SendParcelPage(getDriver());
         sparcel.completemethodssendparcel();
     }
