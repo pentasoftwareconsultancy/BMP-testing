@@ -38,15 +38,21 @@ public class ActionsUtil {
     }
 
     public void pressEnter(WebElement element) {
+
         actions.sendKeys(element, Keys.ENTER).build().perform();
     }
 
     public void pressEnter() {
+
         actions.sendKeys(Keys.ENTER).build().perform();
     }
 
     public void pressEscape(WebElement element) {
         actions.sendKeys(element, Keys.ESCAPE).perform();
+    }
+
+    public void pressTab(WebElement element) {
+        actions.sendKeys(element, Keys.TAB).perform();
     }
 
     public void arrowDownNTimes(WebElement element, int times) {
