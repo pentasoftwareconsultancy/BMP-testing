@@ -1,6 +1,8 @@
 package com.bmp.automation.travelerPages;
 
 import com.bmp.automation.pages.Login_Page;
+import com.bmp.automation.utility.Utils;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,29 +18,21 @@ public class Kyc_Registration {
     // ================================
     // Locators
     // ================================
-    @FindBy(xpath = "//input[@name='first_name']")
-    private WebElement firstNameField;
+    @FindBy(xpath = "//input[@placeholder='ABCDE1234F']")
+    private WebElement panNumber;
 
-    @FindBy(xpath = "//input[@name='last_name']")
-    private WebElement lastNameField;
+    @FindBy(xpath = "//input[@placeholder='Enter your full name']")
+    private WebElement fullNameField;
 
     @FindBy(xpath = "//input[@name='dob']")
     private WebElement dateofbirthField;
 
-    @FindBy(xpath = "//select[@name='gender']")
-    private WebElement selectGender;
+    @FindBy(xpath = "//button[@type='submit']")
+    private WebElement verifyPanDetails;
 
-    @FindBy(xpath = "//input[@placeholder='Enter address (optional)']")
-    private WebElement addressField;
+    @FindBy(xpath ="//*[@id=\"root\"]/div/div/div[3]/button")
+    private WebElement continueButton;
 
-    @FindBy(xpath = "//button[text()='Next']")
-    private WebElement nextButton;
-
-    @FindBy(xpath = "//input[@placeholder='Aadhar card number']")
-    private WebElement adharcardnumberField;
-
-    @FindBy(xpath = "//input[@placeholder='Pan card number']")
-    private WebElement pancardnumberField;
 
     // ================================
     // Constructor
@@ -52,5 +46,17 @@ public class Kyc_Registration {
         PageFactory.initElements(driver, this);
     }
 
+
+    public void setVerifyPanDetails(){
+        Utils.waitForVisibilityOFElement(driver, panNumber,10);
+        panNumber.sendKeys("ATNPT1052B");
+        Utils.waitForInvisibilityOfElement(driver,fullNameField,10);
+        fullNameField.sendKeys("Abhijeet Kulkarni");
+        dateofbirthField.sendKeys("01/01/2000");
+        Utils.waitForVisibilityOFElement(driver,verifyPanDetails,5);
+        verifyPanDetails.sendKeys(Keys.ENTER);
+        Utils.waitForElementToBeClickable(driver,continueButton,10);
+        continueButton.click();
+    }
 
 }
